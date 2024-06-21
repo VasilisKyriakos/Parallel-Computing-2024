@@ -1,2 +1,2 @@
-# Parallel_Computing_Summer_2024
+# Parallel Computing
 Multi - Dimentional Search (MDS)
