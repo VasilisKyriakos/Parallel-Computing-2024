@@ -171,11 +171,14 @@ void mds(double *point, double *endpoint, int n, double *val, double eps, int ma
 	*val = fu[0];
 	terminate = 0;
 	iter = 0;
+	
 	while (terminate == 0 && iter < maxiter) {
+		
 		k = minimum_simplex(fu, n);
 		swap_simplex(u, fu, n, k, 0);
-			print_simplex(u, fu, n);
-			printf("iter : %i Val: %f, Simplex size = %f  \n", iter, fu[0], simplex_size(u, n));
+
+		print_simplex(u, fu, n);
+		printf("iter : %i Val: %f, Simplex size = %f  \n", iter, fu[0], simplex_size(u, n));
 
 		found_better = 0;
 		while (found_better == 0) {
