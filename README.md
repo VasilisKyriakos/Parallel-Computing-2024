@@ -3,5 +3,4 @@ Multi - Dimentional Search (MDS)
 
 # Installation (on Mac)
 
-brew install gcc
-brew install llvm libomp
+brew install gcc@11

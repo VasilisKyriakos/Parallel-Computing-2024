@@ -1,7 +1,8 @@
-CC=gcc
+CC=gcc-11
 CFLAGS=-Wall -O3 -fopenmp
 CFLAGS+=-DDEBUG
 LDLIBS=-lm
+
 
 #TODO: add the following cases: multistart_mds_omp multistart_mds_omp_tasks multistart_mds_mpi
 
