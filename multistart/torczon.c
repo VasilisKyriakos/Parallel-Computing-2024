@@ -3,6 +3,7 @@
 #include <math.h>
 
 extern double f(double *x, int n);
+extern FILE *fp;
 
 void initialize_simplex(double *u, int n, double *point, double delta) {
 	int i, j;
@@ -23,6 +24,8 @@ void initialize_simplex(double *u, int n, double *point, double delta) {
 	}
 }
 
+
+/*
 void print_simplex(double *u, double *fu, int n) {
 	int i, j;
 	for (i = 0; i < n + 1; i++) {
@@ -35,6 +38,22 @@ void print_simplex(double *u, double *fu, int n) {
 	printf("========================\n");
 
 }
+*/
+
+
+void print_simplex(double *u, double *fu, int n) {
+    int i, j;
+    for (i = 0; i < n + 1; i++) {
+        fprintf(fp, "%i, %14.10f", i, fu[i]);
+        for (j = 0; j < n; j++) {
+            fprintf(fp, ", %f", u[i * n + j]);
+        }
+        fprintf(fp, "\n");
+    }
+    fprintf(fp, "========================\n");
+}
+
+
 
 int minimum_simplex(double *fu, int n) {
 	int i;
@@ -156,8 +175,8 @@ void mds(double *point, double *endpoint, int n, double *val, double eps, int ma
 	while (terminate == 0 && iter < maxiter) {
 		k = minimum_simplex(fu, n);
 		swap_simplex(u, fu, n, k, 0);
-		//	print_simplex(u, fu, n);
-		//	printf("iter : %i Val: %f, Simplex size = %f  \n", iter, fu[0], simplex_size(u, n));
+			print_simplex(u, fu, n);
+			printf("iter : %i Val: %f, Simplex size = %f  \n", iter, fu[0], simplex_size(u, n));
 
 		found_better = 0;
 		while (found_better == 0) {

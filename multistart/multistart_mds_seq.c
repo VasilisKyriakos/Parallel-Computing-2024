@@ -8,6 +8,10 @@
 #define MAXVARS		(250)	/* max # of variables	     */
 #define EPSMIN		(1E-6)	/* ending value of stepsize  */
 
+
+FILE *fp; // Global file pointer
+
+
 /* prototype of local optimization routine, code available in torczon.c */
 extern void mds(double *startpoint, double *endpoint, int n, double *val, double eps, int maxfevals, int maxiter,
          double mu, double theta, double delta, int *ni, int *nf, double *xl, double *xr, int *term);
@@ -44,8 +48,17 @@ double get_wtime(void)
 
 int main(int argc, char *argv[])
 {
+
+    // Open file for writing simplex vertices
+    fp = fopen("simplex_vertices.csv", "w");
+    if (fp == NULL) {
+        fprintf(stderr, "Error opening file for writing.\n");
+        return 1;
+    }
+
+
 	/* problem parameters */
-	int nvars = 4;		/* number of variables (problem dimension) */
+	int nvars = 3;		/* number of variables (problem dimension) */
 	int ntrials = 64;	/* number of trials */
 	double lower[MAXVARS], upper[MAXVARS];	/* lower and upper bounds */
 
