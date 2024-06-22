@@ -50,7 +50,6 @@ void print_simplex(double *u, double *fu, int n) {
         }
         fprintf(fp, "\n");
     }
-    fprintf(fp, "========================\n");
 }
 
 
