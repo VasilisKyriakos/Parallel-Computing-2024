@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     }
 
 	/* problem parameters */
-	int nvars = 3;		/* number of variables (problem dimension) */
+	int nvars = 4;		/* number of variables (problem dimension) */
 	int ntrials = 64;	/* number of trials */
 	double lower[MAXVARS], upper[MAXVARS];	/* lower and upper bounds */
 
@@ -87,7 +87,9 @@ int main(int argc, char *argv[])
 	for (i = 0; i < MAXVARS; i++) upper[i] = +2.0;	/* upper bound: +2.0 */
 
 	t0 = get_wtime();
+	
 	for (trial = 0; trial < ntrials; trial++) {
+		
 		srand48(trial);
 
 		/* starting guess for rosenbrock test function, search space in [-2, 2) */

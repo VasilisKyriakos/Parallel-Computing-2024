@@ -1,6 +1,6 @@
 CC=gcc-11
 CFLAGS=-Wall -O3 -fopenmp
-CFLAGS+=-DDEBUG
+#CFLAGS+=-DDEBUG
 LDLIBS=-lm
 
 
