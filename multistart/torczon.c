@@ -119,6 +119,7 @@ void swap_simplex(double *u, double *fu, int n, int from, int to) {
 	free(tmp);
 }
 
+
 void assign_simplex(double *s1, double *fs1, double *s2, double *fs2, int n) {
 	int i, j;
 	for (i = 1; i < n + 1; i++) {
@@ -128,6 +129,7 @@ void assign_simplex(double *s1, double *fs1, double *s2, double *fs2, int n) {
 		fs1[i] = fs2[i];
 	}
 }
+
 
 int inbounds_simplex(double *s, int n, double *xl, double *xr) {
 	int i, j;
@@ -139,6 +141,7 @@ int inbounds_simplex(double *s, int n, double *xl, double *xr) {
 	}
 	return 1;
 }
+
 
 void mds(double *point, double *endpoint, int n, double *val, double eps, int maxfevals, int maxiter, double mu,
 		double theta, double delta, int *nit, int *nf, double *xl, double *xr, int *term) {
@@ -186,6 +189,7 @@ void mds(double *point, double *endpoint, int n, double *val, double eps, int ma
 
 		found_better = 0;
 		while (found_better == 0) {
+
 			if (*nf > maxfevals) {
 				*term = 1;
 				terminate = 1;
@@ -198,12 +202,15 @@ void mds(double *point, double *endpoint, int n, double *val, double eps, int ma
 				break;
 			}
 
-			// rotation step
+			// Start Rotation Step
+
 			fr[0] = fu[0];
 
 			// Check rotation prior to function evaluation
 			// Consider failure when out of bounds so set found_better = 0
 			// when out of bounds!!!
+
+			// Reflection Step
 
 			found_better = 1;
 			for (i = 1; i < n + 1; i++) {
@@ -217,6 +224,8 @@ void mds(double *point, double *endpoint, int n, double *val, double eps, int ma
 				if (found_better == 0)
 					break;
 			}
+
+			// Evaluate Reflected Points
 
 			if (found_better == 1) {
 				for (i = 1; i < n + 1; i++) {
@@ -237,7 +246,10 @@ void mds(double *point, double *endpoint, int n, double *val, double eps, int ma
 
 			} // end found_better
 
-			if (found_better == 1) // expand
+
+			// Expansion Step
+
+			if (found_better == 1) 
 			{
 				// Check expansion for out of bounds
 				out_of_bounds = 0;
@@ -252,8 +264,10 @@ void mds(double *point, double *endpoint, int n, double *val, double eps, int ma
 					if (out_of_bounds == 1)
 						break;
 				}
+
 				// We now have the decision: if out_of_bounds = 0 proceed
 				// else proceed with the reflection (discard expansion)
+
 				if (out_of_bounds == 0) {
 
 					fec[0] = fu[0];
@@ -275,7 +289,12 @@ void mds(double *point, double *endpoint, int n, double *val, double eps, int ma
 				} else {
 					assign_simplex(u, fu, r, fr, n);
 				}
-			} else // contract
+
+			} 
+
+			// Constraction Step
+
+			else 
 			{
 				fec[0] = fu[0];
 				for (i = 1; i < n + 1; i++) {
@@ -296,11 +315,19 @@ void mds(double *point, double *endpoint, int n, double *val, double eps, int ma
 			}
 
 		}
+
+		// Iteration and Termination
+
 		iter++;
+
 		if (iter == maxiter)
 			*term = 3;
+
 	} /* while */
 
+
+    // Final Update and Cleanup
+	
 	k = minimum_simplex(fu, n);
 	swap_simplex(u, fu, n, k, 0);
 	for (i = 0; i < n; i++)
