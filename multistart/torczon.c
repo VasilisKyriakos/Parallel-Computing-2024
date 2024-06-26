@@ -11,6 +11,7 @@ void initialize_simplex(double *u, int n, double *point, double delta) {
 
 	// Initialize simplex
 	// Set u0 the initial point
+	
 	for (j = 0; j < n; j++)
 		u[j] = point[j];
 	// Set the other n-points to lay on
