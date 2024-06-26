@@ -3,14 +3,17 @@ CFLAGS=-Wall -O3 -fopenmp
 #CFLAGS+=-DDEBUG
 LDLIBS=-lm
 
+# Build all versions
+all: multistart_mds_seq multistart_mds_omp
 
-#TODO: add the following cases: multistart_mds_omp multistart_mds_omp_tasks multistart_mds_mpi
-
-all: multistart_mds_seq
-
+# Sequential version
 multistart_mds_seq: multistart_mds_seq.c torczon.c Makefile
 	$(CC) $(CFLAGS) -o multistart_mds_seq multistart_mds_seq.c torczon.c $(LDLIBS)
 
+# OpenMP version
+multistart_mds_omp: multistart_mds_omp.c torczon.c Makefile
+	$(CC) $(CFLAGS) -o multistart_mds_omp multistart_mds_omp.c torczon.c $(LDLIBS)
+
 
 clean:
-	rm -f multistart_mds_seq
+	rm -f multistart_mds_seq multistart_mds_omp
