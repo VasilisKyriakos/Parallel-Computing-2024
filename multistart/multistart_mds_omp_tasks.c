@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
         unsigned short randBuffer[3];
         randBuffer[0] = 0;
         randBuffer[1] = 0;
-        randBuffer[2] = 1 + ntrials;  // Ensure unique seed for each thread
+        randBuffer[2] = omp_get_thread_num() + ntrials;  // Ensure unique seed for each thread
         
         #pragma omp single nowait
         {
