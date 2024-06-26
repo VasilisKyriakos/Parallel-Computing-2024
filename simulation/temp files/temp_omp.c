@@ -81,46 +81,38 @@ int main(int argc, char *argv[])
     for (i = 0; i < MAXVARS; i++) lower[i] = -2.0; /* lower bound: -2.0 */
     for (i = 0; i < MAXVARS; i++) upper[i] = +2.0; /* upper bound: +2.0 */
 
-    //long tseed = 1;  // Fixed seed for reproducibility
-    long tseed = time(NULL);
     t0 = omp_get_wtime();
 
-    #pragma omp parallel reduction(+:funevals) private(trial, i, startpt, endpt, fx, nt, nf)
-    {
-        unsigned short randBuffer[3];
-        randBuffer[0] = 0;
-        randBuffer[1] = 0;
-        randBuffer[2] = tseed + omp_get_thread_num();  // Ensure unique seed for each thread
+    #pragma omp parallel for private(trial, i, startpt, endpt, fx, nt, nf) shared(best_pt, best_fx, best_trial, best_nt, best_nf, lower, upper)
+    for (trial = 0; trial < ntrials; trial++) {
+        
+        srand48(trial + omp_get_thread_num()); // Ensure different seed for each thread
 
-        #pragma omp for schedule(static)
-        for (trial = 0; trial < ntrials; trial++) {
+        /* starting guess for rosenbrock test function, search space in [-2, 2) */
+        for (i = 0; i < nvars; i++) {
+            startpt[i] = lower[i] + (upper[i] - lower[i]) * drand48();
+        }
 
-            /* starting guess for rosenbrock test function, search space in [-2, 2) */
-            for (i = 0; i < nvars; i++) {
-                startpt[i] = lower[i] + (upper[i] - lower[i]) * erand48(randBuffer);
-            }
+        int term = -1;
+        mds(startpt, endpt, nvars, &fx, eps, maxfevals, maxiter, mu, theta, delta, &nt, &nf, lower, upper, &term);
 
-            int term = -1;
-            mds(startpt, endpt, nvars, &fx, eps, maxfevals, maxiter, mu, theta, delta, &nt, &nf, lower, upper, &term);
-
-            #pragma omp critical
-            {
-                /* keep the best solution */
-                if (fx < best_fx) {
-                    best_trial = trial;
-                    best_nt = nt;
-                    best_nf = nf;
-                    best_fx = fx;
-                    for (i = 0; i < nvars; i++)
-                        best_pt[i] = endpt[i];
-                }
+        #pragma omp critical
+        {
+            /* keep the best solution */
+            if (fx < best_fx) {
+                best_trial = trial;
+                best_nt = nt;
+                best_nf = nf;
+                best_fx = fx;
+                for (i = 0; i < nvars; i++)
+                    best_pt[i] = endpt[i];
             }
         }
     }
 
     t1 = omp_get_wtime();
 
-    printf("\n\nFINAL RESULTS (OPENMP):\n");
+    printf("\n\nFINAL RESULTS:\n");
     printf("Elapsed time = %.3lf s\n", t1 - t0);
     printf("Total number of trials = %d\n", ntrials);
     printf("Total number of function evaluations = %ld\n", funevals);

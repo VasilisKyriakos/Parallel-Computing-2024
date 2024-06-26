@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
 	}
 	t1 = get_wtime();
 
-	printf("\n\nFINAL RESULTS:\n");
+	printf("\n\nFINAL RESULTS (SEQUENTIAL):\n");
 	printf("Elapsed time = %.3lf s\n", t1-t0);
 	printf("Total number of trials = %d\n", ntrials);
 	printf("Total number of function evaluations = %ld\n", funevals);
