@@ -7,12 +7,12 @@ LDLIBS=-lm
 all: multistart_mds_seq multistart_mds_omp
 
 # Sequential version
-multistart_mds_seq: multistart_mds_seq.c torczon.c Makefile
-	$(CC) $(CFLAGS) -o multistart_mds_seq multistart_mds_seq.c torczon.c $(LDLIBS)
+multistart_mds_seq: multistart_mds_seq.c torczon2.c Makefile
+	$(CC) $(CFLAGS) -o multistart_mds_seq multistart_mds_seq.c torczon2.c $(LDLIBS)
 
 # OpenMP version
-multistart_mds_omp: multistart_mds_omp.c torczon.c Makefile
-	$(CC) $(CFLAGS) -o multistart_mds_omp multistart_mds_omp.c torczon.c $(LDLIBS)
+multistart_mds_omp: multistart_mds_omp.c torczon2.c Makefile
+	$(CC) $(CFLAGS) -o multistart_mds_omp multistart_mds_omp.c torczon2.c $(LDLIBS)
 
 
 clean:
