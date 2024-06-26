@@ -26,7 +26,7 @@ double f(double *x, int n)
     fv = 0.0;
     for (i=0; i<n-1; i++)   /* rosenbrock */
         fv = fv + 100.0*pow((x[i+1]-x[i]*x[i]),2) + pow((x[i]-1.0),2);
-		usleep(1);	/* do not remove, introduces some artificial work */
+		usleep(10);	/* do not remove, introduces some artificial work */
 
     return fv;
 }
