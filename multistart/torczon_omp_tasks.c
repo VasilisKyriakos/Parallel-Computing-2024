@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <omp.h>
 
 extern double f(double *x, int n);
 
@@ -214,22 +215,35 @@ void mds(double *point, double *endpoint, int n, double *val, double eps, int ma
 			// Reflection Step
 
 			found_better = 1;
-			for (i = 1; i < n + 1; i++) {
-				for (j = 0; j < n; j++) {
+			#pragma omp parallel for collapse(2) private(i, j) 
+			for (i = 1; i < n + 1 ; i++) {
+				for (j = 0; j < n ; j++) {
 					r[i * n + j] = u[0 * n + j] - (u[i * n + j] - u[0 * n + j]);
 					if (r[i * n + j] > xr[j] || r[i * n + j] < xl[j]) {
-						found_better = 0;
-						break;
+						#pragma omp critical
+						{
+							found_better = 0;
+						}
+						#pragma omp cancel for
 					}
+					if(found_better ==0){
+						#pragma omp cancel for
+
+					}
+					
 				}
-				if (found_better == 0)
-					break;
+
 			}
+				
+
+			
 
 			// Evaluate Reflected Points
 
 			if (found_better == 1) {
+
 				for (i = 1; i < n + 1; i++) {
+					#pragma omp parralel for private(i,j)
 					for (j = 0; j < n; j++) {
 						r[i * n + j] = u[0 * n + j] - (u[i * n + j] - u[0 * n + j]);
 					}

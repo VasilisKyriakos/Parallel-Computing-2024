@@ -81,8 +81,8 @@ int main(int argc, char *argv[])
     for (i = 0; i < MAXVARS; i++) lower[i] = -2.0; /* lower bound: -2.0 */
     for (i = 0; i < MAXVARS; i++) upper[i] = +2.0; /* upper bound: +2.0 */
 
-    //long tseed = 1;  // Fixed seed for reproducibility
-    long tseed = time(NULL);
+    long tseed = 1;  // Fixed seed for reproducibility
+    //long tseed = time(NULL);
     t0 = omp_get_wtime();
 
     #pragma omp parallel reduction(+:funevals) private(trial, i, startpt, endpt, fx, nt, nf)
@@ -91,6 +91,7 @@ int main(int argc, char *argv[])
         randBuffer[0] = 0;
         randBuffer[1] = 0;
         randBuffer[2] = tseed + omp_get_thread_num();  // Ensure unique seed for each thread
+        printf("Startpt {%d}: ||", omp_get_thread_num());
 
         #pragma omp for schedule(static)
         for (trial = 0; trial < ntrials; trial++) {

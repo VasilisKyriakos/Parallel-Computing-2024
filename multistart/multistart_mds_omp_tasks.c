@@ -82,40 +82,58 @@ int main(int argc, char *argv[])
     for (i = 0; i < MAXVARS; i++) upper[i] = +2.0; /* upper bound: +2.0 */
 
     //long tseed = 1;  // Fixed seed for reproducibility
-    long tseed = 1;
     t0 = omp_get_wtime();
 
     #pragma omp parallel reduction(+:funevals)
-    #pragma omp single
     {
+        printf("Thread {%d}: ||", omp_get_thread_num());
+
         unsigned short randBuffer[3];
         randBuffer[0] = 0;
         randBuffer[1] = 0;
-        randBuffer[2] = tseed + omp_get_thread_num();  // Ensure unique seed for each thread
+        randBuffer[2] = 1 + ntrials;  // Ensure unique seed for each thread
+        
+        #pragma omp single nowait
+        {
+            for (trial = 0; trial < ntrials; trial++) {
+                
+                /* starting guess for rosenbrock test function, search space in [-2, 2) */
+                for (i = 0; i < nvars; i++) {
+                    startpt[i] = lower[i] + (upper[i] - lower[i]) * erand48(randBuffer);
+                
+                }           
+        
+                int term = -1;
+                #pragma omp task firstprivate(trial,startpt,endpt,fx, nt,nf, term)
+                {
+                    mds(startpt, endpt, nvars, &fx, eps, maxfevals, maxiter, mu, theta, delta, &nt, &nf, lower, upper, &term);
 
-        for (trial = 0; trial < ntrials; trial++) {
+                #pragma omp critical
+                {
+#if DEBUG
 
-            /* starting guess for rosenbrock test function, search space in [-2, 2) */
-            for (i = 0; i < nvars; i++) {
-                startpt[i] = lower[i] + (upper[i] - lower[i]) * erand48(randBuffer);
-            }
 
-            int term = -1;
-            #pragma omp task
-                mds(startpt, endpt, nvars, &fx, eps, maxfevals, maxiter, mu, theta, delta, &nt, &nf, lower, upper, &term);
+		printf("\n\n\nMDS %d USED %d ITERATIONS AND %d FUNCTION CALLS, AND RETURNED\n", trial, nt, nf);
+        printf("Hello from thread %d\n", thread_num);
 
-            #pragma omp critical
-            {
-                /* keep the best solution */
-                if (fx < best_fx) {
-                    best_trial = trial;
-                    best_nt = nt;
-                    best_nf = nf;
-                    best_fx = fx;
-                    for (i = 0; i < nvars; i++)
-                        best_pt[i] = endpt[i];
+		for (i = 0; i < nvars; i++)
+			printf("x[%3d] = %15.7le \n", i, endpt[i]);
+
+		printf("f(x) = %15.7le\n", fx);
+#endif
+                    /* keep the best solution */
+                    if (fx < best_fx) {
+                        best_trial = trial;
+                        best_nt = nt;
+                        best_nf = nf;
+                        best_fx = fx;
+                        for (i = 0; i < nvars; i++)
+                            best_pt[i] = endpt[i];
+                    }
+                }
                 }
             }
+            
         }
     }
 
