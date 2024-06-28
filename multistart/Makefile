@@ -22,8 +22,8 @@ multistart_mds_omp: multistart_mds_omp.c torczon.c Makefile
 
 
 # OpenMP Tasks version
-multistart_mds_omp_tasks: multistart_mds_omp_tasks.c torczon.c Makefile
-	$(CC) $(CFLAGS) -o multistart_mds_omp_tasks multistart_mds_omp_tasks.c torczon.c $(LDLIBS)
+multistart_mds_omp_tasks: multistart_mds_omp_tasks.c torczon_temp.c Makefile
+	$(CC) $(CFLAGS) -o multistart_mds_omp_tasks multistart_mds_omp_tasks.c torczon_temp.c $(LDLIBS)
 
 
 # MPI version

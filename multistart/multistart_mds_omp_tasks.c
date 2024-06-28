@@ -25,8 +25,12 @@ double f(double *x, int n)
     funevals++;
 
     fv = 0.0;
-    for (i = 0; i < n - 1; i++)   /* rosenbrock */
+
+    for (i = 0; i < n - 1; i++){   /* rosenbrock */
         fv = fv + 100.0 * pow((x[i + 1] - x[i] * x[i]), 2) + pow((x[i] - 1.0), 2);
+    }
+    
+    #pragma omp task untied 
     usleep(10);  /* do not remove, introduces some artificial work */
 
     return fv;
@@ -34,19 +38,10 @@ double f(double *x, int n)
 
 int main(int argc, char *argv[])
 {
-    /* check for correct number of arguments */
-    if (argc != 2) {
-        fprintf(stderr, "Usage: %s <number_of_threads>\n", argv[0]);
-        return 1;
-    }
 
     /* parse number of threads */
     int num_threads = atoi(argv[1]);
-    if (num_threads < 1) {
-        fprintf(stderr, "Number of threads must be positive.\n");
-        return 1;
-    }
-
+ 
     omp_set_num_threads(num_threads);
 
     /* problem parameters */
@@ -81,46 +76,37 @@ int main(int argc, char *argv[])
     for (i = 0; i < MAXVARS; i++) lower[i] = -2.0; /* lower bound: -2.0 */
     for (i = 0; i < MAXVARS; i++) upper[i] = +2.0; /* upper bound: +2.0 */
 
-    //long tseed = 1;  // Fixed seed for reproducibility
     t0 = omp_get_wtime();
+    long tseed = 1;
 
     #pragma omp parallel reduction(+:funevals)
     {
-        //printf("Thread {%d}: ||", omp_get_thread_num());
-
-        unsigned short randBuffer[3];
-        randBuffer[0] = 0;
-        randBuffer[1] = 0;
-        randBuffer[2] = omp_get_thread_num() + ntrials;  // Ensure unique seed for each thread
-        
         #pragma omp single nowait
         {
+    
+            unsigned short randBuffer[3];
+            int thread_id = omp_get_thread_num();
+            randBuffer[0] = 0;
+            randBuffer[1] = 0;
+            randBuffer[2] = tseed + ntrials + thread_id;  // Ensure unique seed for each thread
+            
+            //printf("\n\nStart Trials ...");
+
             for (trial = 0; trial < ntrials; trial++) {
-                
+
+                //printf("\n\nThread num %d || Rand Buffer: %d",omp_get_thread_num(),randBuffer[2]);
+
                 /* starting guess for rosenbrock test function, search space in [-2, 2) */
                 for (i = 0; i < nvars; i++) {
                     startpt[i] = lower[i] + (upper[i] - lower[i]) * erand48(randBuffer);
-                
                 }           
         
                 int term = -1;
-                #pragma omp task firstprivate(trial,startpt,endpt,fx, nt,nf, term)
-                {
-                    mds(startpt, endpt, nvars, &fx, eps, maxfevals, maxiter, mu, theta, delta, &nt, &nf, lower, upper, &term);
+
+                mds(startpt, endpt, nvars, &fx, eps, maxfevals, maxiter, mu, theta, delta, &nt, &nf, lower, upper, &term);
 
                 #pragma omp critical
                 {
-#if DEBUG
-
-
-		printf("\n\n\nMDS %d USED %d ITERATIONS AND %d FUNCTION CALLS, AND RETURNED\n", trial, nt, nf);
-        printf("Hello from thread %d\n", thread_num);
-
-		for (i = 0; i < nvars; i++)
-			printf("x[%3d] = %15.7le \n", i, endpt[i]);
-
-		printf("f(x) = %15.7le\n", fx);
-#endif
                     /* keep the best solution */
                     if (fx < best_fx) {
                         best_trial = trial;
@@ -131,7 +117,7 @@ int main(int argc, char *argv[])
                             best_pt[i] = endpt[i];
                     }
                 }
-                }
+                
             }
             
         }

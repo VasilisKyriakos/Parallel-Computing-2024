@@ -5,7 +5,6 @@
 
 extern double f(double *x, int n);
 
-
 void initialize_simplex(double *u, int n, double *point, double delta) {
     int i, j;
 

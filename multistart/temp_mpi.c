@@ -31,10 +31,13 @@ double f(double *x, int n) {
 }
 
 double get_wtime(void) {
+
     return MPI_Wtime();
+
 }
 
 int main(int argc, char *argv[]) {
+
     MPI_Init(&argc, &argv);
 
     int rank, size;
@@ -74,20 +77,14 @@ int main(int argc, char *argv[]) {
     for (i = 0; i < MAXVARS; i++) upper[i] = +2.0; /* upper bound: +2.0 */
 
     t0 = get_wtime();
-    long tseed = 1;
+    long tseed =1;
 
     unsigned short randBuffer[3];
     randBuffer[0] = 0;
     randBuffer[1] = 0;
-    randBuffer[2] = tseed + rank + ntrials;
+    randBuffer[2] = tseed + rank;
 
-    /* Calculate work distribution */
-    double const step = (double)ntrials / size;
-    unsigned long start = rank * step;
-    unsigned long end = (rank + 1) * step;
-    if (rank == size - 1) end = ntrials;
-
-    for (trial = start; trial < end; trial++) {
+    for (trial = rank; trial < ntrials; trial += size) {
         /* starting guess for rosenbrock test function, search space in [-2, 2) */
         for (i = 0; i < nvars; i++) {
             startpt[i] = lower[i] + (upper[i] - lower[i]) * erand48(randBuffer);
@@ -112,14 +109,12 @@ int main(int argc, char *argv[]) {
             double recv_fx;
             int recv_trial, recv_nt, recv_nf;
             double recv_pt[MAXVARS];
-
-            MPI_Status status;
-
-            MPI_Recv(&recv_fx, 1, MPI_DOUBLE, p, 100, MPI_COMM_WORLD,&status);
-            MPI_Recv(&recv_trial, 1, MPI_INT, p, 101, MPI_COMM_WORLD, &status);
-            MPI_Recv(&recv_nt, 1, MPI_INT, p, 102, MPI_COMM_WORLD, &status);
-            MPI_Recv(&recv_nf, 1, MPI_INT, p, 103, MPI_COMM_WORLD, &status);
-            MPI_Recv(recv_pt, MAXVARS, MPI_DOUBLE, p, 104, MPI_COMM_WORLD, &status);
+            
+            MPI_Recv(&recv_fx, 1, MPI_DOUBLE, p, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            MPI_Recv(&recv_trial, 1, MPI_INT, p, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            MPI_Recv(&recv_nt, 1, MPI_INT, p, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            MPI_Recv(&recv_nf, 1, MPI_INT, p, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            MPI_Recv(recv_pt, MAXVARS, MPI_DOUBLE, p, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
             if (recv_fx < best_fx) {
                 best_fx = recv_fx;
@@ -130,31 +125,20 @@ int main(int argc, char *argv[]) {
                     best_pt[i] = recv_pt[i];
             }
         }
-
-        /* Broadcast the best result to all other processes */
-        
-        MPI_Bcast(&best_trial, 1, MPI_INT, 0, MPI_COMM_WORLD);
-        MPI_Bcast(&best_nt, 1, MPI_INT, 0, MPI_COMM_WORLD);
-        MPI_Bcast(&best_nf, 1, MPI_INT, 0, MPI_COMM_WORLD);
-        MPI_Bcast(best_pt, MAXVARS, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-        MPI_Bcast(&best_fx, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-
     } else {
-
-        MPI_Send(&best_fx, 1, MPI_DOUBLE, 0, 100, MPI_COMM_WORLD);
-        MPI_Send(&best_trial, 1, MPI_INT, 0, 101, MPI_COMM_WORLD);
-        MPI_Send(&best_nt, 1, MPI_INT, 0, 102, MPI_COMM_WORLD);
-        MPI_Send(&best_nf, 1, MPI_INT, 0, 103, MPI_COMM_WORLD);
-        MPI_Send(best_pt, MAXVARS, MPI_DOUBLE, 0, 104, MPI_COMM_WORLD);
-
-        /* Receive the best result from rank 0 */
-        MPI_Bcast(&best_trial, 1, MPI_INT, 0, MPI_COMM_WORLD);
-        MPI_Bcast(&best_nt, 1, MPI_INT, 0, MPI_COMM_WORLD);
-        MPI_Bcast(&best_nf, 1, MPI_INT, 0, MPI_COMM_WORLD);
-        MPI_Bcast(best_pt, MAXVARS, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-        MPI_Bcast(&best_fx, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-
+        MPI_Send(&best_fx, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
+        MPI_Send(&best_trial, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
+        MPI_Send(&best_nt, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
+        MPI_Send(&best_nf, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
+        MPI_Send(best_pt, MAXVARS, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
     }
+
+    /* Broadcasting the best result from rank 0 */
+    MPI_Bcast(&best_trial, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&best_nt, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&best_nf, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(best_pt, MAXVARS, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&best_fx, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
     /* Reduce the function evaluations across all processes */
     unsigned long global_funevals;
@@ -175,6 +159,5 @@ int main(int argc, char *argv[]) {
     }
 
     MPI_Finalize();
-
     return 0;
 }
