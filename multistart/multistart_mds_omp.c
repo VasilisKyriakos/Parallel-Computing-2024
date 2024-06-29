@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
     double t0, t1;
 
     /* initialization of lower and upper bounds of search space */
-    
+
     for (i = 0; i < MAXVARS; i++) lower[i] = -2.0; /* lower bound: -2.0 */
     for (i = 0; i < MAXVARS; i++) upper[i] = +2.0; /* upper bound: +2.0 */
 
