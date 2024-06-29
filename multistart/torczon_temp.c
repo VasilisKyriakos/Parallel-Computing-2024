@@ -29,8 +29,6 @@ void initialize_simplex(double *u, int n, double *point, double delta) {
 	}
 }
 
-
-
 void print_simplex(double *u, double *fu, int n) {
 	int i, j;
 	for (i = 0; i < n + 1; i++) {

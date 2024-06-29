@@ -16,6 +16,7 @@ extern void mds(double *startpoint, double *endpoint, int n, double *val, double
 unsigned long funevals = 0;
 
 /* Rosenbrock classic parabolic valley ("banana") function */
+
 double f(double *x, int n)
 {
     double fv;
@@ -25,13 +26,11 @@ double f(double *x, int n)
     funevals++;
 
     fv = 0.0;
-
     for (i = 0; i < n - 1; i++){ /* rosenbrock */
         fv = fv + 100.0 * pow((x[i + 1] - x[i] * x[i]), 2) + pow((x[i] - 1.0), 2);
     }
 
     usleep(10);
-
     return fv;
 }
 
@@ -44,12 +43,8 @@ int main(int argc, char *argv[])
     }
 
     /* parse number of threads */
+    
     int num_threads = atoi(argv[1]);
-    if (num_threads < 1) {
-        fprintf(stderr, "Number of threads must be positive.\n");
-        return 1;
-    }
-
     omp_set_num_threads(num_threads);
 
     /* problem parameters */
@@ -81,14 +76,15 @@ int main(int argc, char *argv[])
     double t0, t1;
 
     /* initialization of lower and upper bounds of search space */
+    
     for (i = 0; i < MAXVARS; i++) lower[i] = -2.0; /* lower bound: -2.0 */
     for (i = 0; i < MAXVARS; i++) upper[i] = +2.0; /* upper bound: +2.0 */
 
     long tseed = 1;  // Fixed seed for reproducibility
-    //long tseed = time(NULL);
+    
     t0 = omp_get_wtime();
 
-    #pragma omp parallel reduction(+:funevals) private(trial, i, startpt, endpt, fx, nt, nf)
+    #pragma omp parallel reduction(+:funevals) private(trial, i, startpt, endpt, fx, nt, nf) 
     {
         unsigned short randBuffer[3];
         randBuffer[0] = 0;
