@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
     t0 = omp_get_wtime();
     long tseed = 1;
 
-    #pragma omp parallel reduction(+:funevals)
+    #pragma omp parallel
     {
         #pragma omp single 
         {
@@ -110,18 +110,17 @@ int main(int argc, char *argv[])
 
                 mds(startpt, endpt, nvars, &fx, eps, maxfevals, maxiter, mu, theta, delta, &nt, &nf, lower, upper, &term);
 
-                #pragma omp critical
-                {
-                    /* keep the best solution */
-                    if (fx < best_fx) {
-                        best_trial = trial;
-                        best_nt = nt;
-                        best_nf = nf;
-                        best_fx = fx;
-                        for (i = 0; i < nvars; i++)
-                            best_pt[i] = endpt[i];
-                    }
+                
+                /* keep the best solution */
+                if (fx < best_fx) {
+                    best_trial = trial;
+                    best_nt = nt;
+                    best_nf = nf;
+                    best_fx = fx;
+                    for (i = 0; i < nvars; i++)
+                        best_pt[i] = endpt[i];
                 }
+                
                 
             }
             
@@ -140,7 +139,7 @@ int main(int argc, char *argv[])
     }
     printf("f(x) = %15.7le\n", best_fx);
     
-    write_results_to_json("results_openmp_tasks.json", t1 - t0, ntrials, funevals, best_trial, best_nt, best_nf, best_pt, nvars, best_fx);
+    //write_results_to_json("results_openmp_tasks.json", t1 - t0, ntrials, funevals, best_trial, best_nt, best_nf, best_pt, nvars, best_fx);
 
     return 0;
 }
