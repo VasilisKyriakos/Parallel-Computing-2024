@@ -35,7 +35,7 @@ void write_results_to_json(const char* filename, double elapsed_time, int ntrial
         fprintf(file, "    ],\n");
         fprintf(file, "    \"best_fx\": %.7le\n", best_fx);
         fprintf(file, "  }\n");
-        fprintf(file, "]\n");
+        fprintf(file, "]");
 
         fclose(file);
     } else {

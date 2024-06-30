@@ -15,7 +15,7 @@ extern void mds(double *startpoint, double *endpoint, int n, double *val, double
 
 extern void write_results_to_json(const char* filename, double elapsed_time, int ntrials, unsigned long funevals, 
                            int best_trial, int best_nt, int best_nf, double* best_pt, int nvars, double best_fx);
-                           
+
 /* global variables */
 unsigned long funevals = 0;
   
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
 
     #pragma omp parallel reduction(+:funevals)
     {
-        #pragma omp single nowait
+        #pragma omp single 
         {
     
             unsigned short randBuffer[3];

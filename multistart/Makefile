@@ -22,8 +22,8 @@ multistart_mds_omp: multistart_mds_omp.c torczon.c json_writer.c Makefile
 
 
 # OpenMP Tasks version
-multistart_mds_omp_tasks: multistart_mds_omp_tasks.c torczon_temp.c json_writer.c Makefile
-	$(CC) $(CFLAGS) -o multistart_mds_omp_tasks multistart_mds_omp_tasks.c torczon_temp.c json_writer.c $(LDLIBS)
+multistart_mds_omp_tasks: multistart_mds_omp_tasks.c torczon_omp_tasks.c json_writer.c Makefile
+	$(CC) $(CFLAGS) -o multistart_mds_omp_tasks multistart_mds_omp_tasks.c torczon_omp_tasks.c json_writer.c $(LDLIBS)
 
 
 # MPI version

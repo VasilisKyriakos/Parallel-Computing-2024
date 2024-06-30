@@ -33,7 +33,11 @@ def clear_results_files():
 def run_executable(executable, result_file, num_runs):
     results = []
     for _ in range(num_runs):
+        # Clear the result file before each run
+        open(result_file, 'w').close()
+        # Run the executable
         subprocess.run(executable.split())
+        # Read the results and extend the list
         with open(result_file, 'r') as f:
             data = json.load(f)
             results.extend(data)
@@ -73,8 +77,9 @@ df['version'] = pd.Categorical(df['version'], categories=['seq', 'openmp', 'open
 df = df.sort_values('version')
 
 # Calculate speedup and efficiency
-df['speedup'] = df.loc[df['version'] == 'seq', 'elapsed_time'].values[0] / df['elapsed_time']
-df['efficiency'] = df['speedup'] / 4  # Assuming 4 threads or processors for simplicity
+seq_time = df.loc[df['version'] == 'seq', 'elapsed_time'].values[0]
+df['speedup'] = seq_time / df['elapsed_time']
+df['efficiency'] = df.apply(lambda row: row['speedup'] / 16 if row['version'] == 'openmp' else (row['speedup'] / 8 if row['version'] in ['openmp_tasks', 'mpi'] else row['speedup']), axis=1)
 
 # Set up the Seaborn style
 sns.set(style="whitegrid")
@@ -91,7 +96,7 @@ def add_annotations(ax, data, y_field):
                     bbox=dict(boxstyle="round,pad=0.3", edgecolor="black", facecolor="white"))
 
 # Create subplots
-fig, axs = plt.subplots(1, 3, figsize=(21, 7))
+fig, axs = plt.subplots(1, 4, figsize=(28, 7))
 
 # Plot execution times
 ax1 = sns.lineplot(data=df, x='version', y='elapsed_time', marker='o', color='blue', ax=axs[0])
@@ -100,21 +105,26 @@ axs[0].set_xlabel('Version', fontsize=12, fontweight='bold')
 axs[0].set_ylabel('Time (s)', fontsize=12, fontweight='bold')
 axs[0].set_title('Execution Time', fontsize=14, fontweight='bold')
 
-# Plot efficiency
-ax2 = sns.lineplot(data=df, x='version', y='efficiency', marker='o', color='orange', ax=axs[1])
-add_annotations(ax2, df, 'efficiency')
+# Plot speedup
+ax2 = sns.lineplot(data=df, x='version', y='speedup', marker='o', color='red', ax=axs[1])
+add_annotations(ax2, df, 'speedup')
 axs[1].set_xlabel('Version', fontsize=12, fontweight='bold')
-axs[1].set_ylabel('Efficiency', fontsize=12, fontweight='bold')
-axs[1].set_title('Efficiency', fontsize=14, fontweight='bold')
+axs[1].set_ylabel('Speedup', fontsize=12, fontweight='bold')
+axs[1].set_title('Speedup', fontsize=14, fontweight='bold')
+
+# Plot efficiency
+ax3 = sns.lineplot(data=df, x='version', y='efficiency', marker='o', color='orange', ax=axs[2])
+add_annotations(ax3, df, 'efficiency')
+axs[2].set_xlabel('Version', fontsize=12, fontweight='bold')
+axs[2].set_ylabel('Efficiency', fontsize=12, fontweight='bold')
+axs[2].set_title('Efficiency', fontsize=14, fontweight='bold')
 
 # Plot best_fx
-ax3 = sns.lineplot(data=df, x='version', y='best_fx', marker='o', color='green', ax=axs[2])
-add_annotations(ax3, df, 'best_fx')
-axs[2].set_xlabel('Version', fontsize=12, fontweight='bold')
-axs[2].set_ylabel('Best f(x)', fontsize=12, fontweight='bold')
-axs[2].set_title('Best f(x)', fontsize=14, fontweight='bold')
+ax4 = sns.lineplot(data=df, x='version', y='best_fx', marker='o', color='green', ax=axs[3])
+add_annotations(ax4, df, 'best_fx')
+axs[3].set_xlabel('Version', fontsize=12, fontweight='bold')
+axs[3].set_ylabel('Best f(x)', fontsize=12, fontweight='bold')
+axs[3].set_title('Best f(x)', fontsize=14, fontweight='bold')
 
 plt.tight_layout()
 plt.show()
-
-
