@@ -30,7 +30,7 @@ double f(double *x, int n)
         fv = fv + 100.0 * pow((x[i + 1] - x[i] * x[i]), 2) + pow((x[i] - 1.0), 2);
     }
 
-    usleep(10);
+    usleep(1);
     return fv;
 }
 

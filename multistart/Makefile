@@ -1,5 +1,5 @@
 CC=gcc-11
-CFLAGS=-Wall -O3 -fopenmp
+CFLAGS=-pg -Wall -O3 -fopenmp
 LDLIBS=-lm
 
 MPIFLAGS =-Wall -O3

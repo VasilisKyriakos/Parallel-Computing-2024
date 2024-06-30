@@ -31,7 +31,7 @@ double f(double *x, int n)
     }
     
     #pragma omp task untied 
-    usleep(10);  /* do not remove, introduces some artificial work */
+    usleep(1);  /* do not remove, introduces some artificial work */
 
     return fv;
 }
@@ -79,9 +79,9 @@ int main(int argc, char *argv[])
     t0 = omp_get_wtime();
     long tseed = 1;
 
-    #pragma omp parallel reduction(+:funevals)
+    #pragma omp parallel
     {
-        #pragma omp single nowait
+        #pragma omp single
         {
     
             unsigned short randBuffer[3];
