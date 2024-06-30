@@ -1,6 +1,6 @@
 [
   {
-    "elapsed_time": 3.388,
+    "elapsed_time": 1.531,
     "ntrials": 64,
     "funevals": 591108,
     "best_trial": 49,
@@ -15,7 +15,7 @@
     "best_fx": 3.8501916e-07
   },
   {
-    "elapsed_time": 3.388,
+    "elapsed_time": 1.531,
     "ntrials": 64,
     "funevals": 591108,
     "best_trial": 49,
@@ -30,22 +30,7 @@
     "best_fx": 3.8501916e-07
   },
   {
-    "elapsed_time": 3.488,
-    "ntrials": 64,
-    "funevals": 640304,
-    "best_trial": 15,
-    "best_nt": 1251,
-    "best_nf": 10005,
-    "best_pt": [
-      0.98091627,
-      0.96227579,
-      0.92592453,
-      0.85703087
-    ],
-    "best_fx": 0.0072846813
-  },
-  {
-    "elapsed_time": 3.388,
+    "elapsed_time": 1.41,
     "ntrials": 64,
     "funevals": 591108,
     "best_trial": 49,
@@ -60,22 +45,7 @@
     "best_fx": 3.8501916e-07
   },
   {
-    "elapsed_time": 3.488,
-    "ntrials": 64,
-    "funevals": 640304,
-    "best_trial": 15,
-    "best_nt": 1251,
-    "best_nf": 10005,
-    "best_pt": [
-      0.98091627,
-      0.96227579,
-      0.92592453,
-      0.85703087
-    ],
-    "best_fx": 0.0072846813
-  },
-  {
-    "elapsed_time": 2.431,
+    "elapsed_time": 1.531,
     "ntrials": 64,
     "funevals": 591108,
     "best_trial": 49,
@@ -90,7 +60,7 @@
     "best_fx": 3.8501916e-07
   },
   {
-    "elapsed_time": 3.388,
+    "elapsed_time": 1.41,
     "ntrials": 64,
     "funevals": 591108,
     "best_trial": 49,
@@ -105,22 +75,7 @@
     "best_fx": 3.8501916e-07
   },
   {
-    "elapsed_time": 3.488,
-    "ntrials": 64,
-    "funevals": 640304,
-    "best_trial": 15,
-    "best_nt": 1251,
-    "best_nf": 10005,
-    "best_pt": [
-      0.98091627,
-      0.96227579,
-      0.92592453,
-      0.85703087
-    ],
-    "best_fx": 0.0072846813
-  },
-  {
-    "elapsed_time": 2.431,
+    "elapsed_time": 1.517,
     "ntrials": 64,
     "funevals": 591108,
     "best_trial": 49,
@@ -135,7 +90,7 @@
     "best_fx": 3.8501916e-07
   },
   {
-    "elapsed_time": 2.742,
+    "elapsed_time": 1.531,
     "ntrials": 64,
     "funevals": 591108,
     "best_trial": 49,
@@ -150,7 +105,7 @@
     "best_fx": 3.8501916e-07
   },
   {
-    "elapsed_time": 3.388,
+    "elapsed_time": 1.41,
     "ntrials": 64,
     "funevals": 591108,
     "best_trial": 49,
@@ -165,22 +120,7 @@
     "best_fx": 3.8501916e-07
   },
   {
-    "elapsed_time": 3.488,
-    "ntrials": 64,
-    "funevals": 640304,
-    "best_trial": 15,
-    "best_nt": 1251,
-    "best_nf": 10005,
-    "best_pt": [
-      0.98091627,
-      0.96227579,
-      0.92592453,
-      0.85703087
-    ],
-    "best_fx": 0.0072846813
-  },
-  {
-    "elapsed_time": 2.431,
+    "elapsed_time": 1.517,
     "ntrials": 64,
     "funevals": 591108,
     "best_trial": 49,
@@ -195,7 +135,7 @@
     "best_fx": 3.8501916e-07
   },
   {
-    "elapsed_time": 2.742,
+    "elapsed_time": 1.581,
     "ntrials": 64,
     "funevals": 591108,
     "best_trial": 49,
@@ -210,7 +150,67 @@
     "best_fx": 3.8501916e-07
   },
   {
-    "elapsed_time": 2.76,
+    "elapsed_time": 1.531,
+    "ntrials": 64,
+    "funevals": 591108,
+    "best_trial": 49,
+    "best_nt": 33,
+    "best_nf": 285,
+    "best_pt": [
+      0.99986429,
+      0.99973081,
+      0.99945989,
+      0.99891607
+    ],
+    "best_fx": 3.8501916e-07
+  },
+  {
+    "elapsed_time": 1.41,
+    "ntrials": 64,
+    "funevals": 591108,
+    "best_trial": 49,
+    "best_nt": 33,
+    "best_nf": 285,
+    "best_pt": [
+      0.99986429,
+      0.99973081,
+      0.99945989,
+      0.99891607
+    ],
+    "best_fx": 3.8501916e-07
+  },
+  {
+    "elapsed_time": 1.517,
+    "ntrials": 64,
+    "funevals": 591108,
+    "best_trial": 49,
+    "best_nt": 33,
+    "best_nf": 285,
+    "best_pt": [
+      0.99986429,
+      0.99973081,
+      0.99945989,
+      0.99891607
+    ],
+    "best_fx": 3.8501916e-07
+  },
+  {
+    "elapsed_time": 1.581,
+    "ntrials": 64,
+    "funevals": 591108,
+    "best_trial": 49,
+    "best_nt": 33,
+    "best_nf": 285,
+    "best_pt": [
+      0.99986429,
+      0.99973081,
+      0.99945989,
+      0.99891607
+    ],
+    "best_fx": 3.8501916e-07
+  },
+  {
+    "elapsed_time": 1.539,
     "ntrials": 64,
     "funevals": 591108,
     "best_trial": 49,
