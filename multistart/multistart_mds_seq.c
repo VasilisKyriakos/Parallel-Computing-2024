@@ -13,6 +13,9 @@ extern void mds(double *startpoint, double *endpoint, int n, double *val, double
          double mu, double theta, double delta, int *ni, int *nf, double *xl, double *xr, int *term);
 
 
+extern void write_results_to_json(const char* filename, double elapsed_time, int ntrials, unsigned long funevals, 
+                           int best_trial, int best_nt, int best_nf, double* best_pt, int nvars, double best_fx);
+
 /* global variables */
 unsigned long funevals = 0;
 
@@ -118,6 +121,8 @@ int main(int argc, char *argv[])
 		printf("x[%3d] = %15.7le \n", i, best_pt[i]);
 	}
 	printf("f(x) = %15.7le\n", best_fx);
+
+	write_results_to_json("results_seq.json", t1 - t0, ntrials, funevals, best_trial, best_nt, best_nf, best_pt, nvars, best_fx);
 
 	return 0;
 }

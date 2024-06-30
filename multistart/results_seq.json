@@ -1,0 +1,227 @@
+[
+  {
+    "elapsed_time": 10.076,
+    "ntrials": 64,
+    "funevals": 640292,
+    "best_trial": 13,
+    "best_nt": 1251,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0194756,
+      1.0393283,
+      1.0802491,
+      1.1671989
+    ],
+    "best_fx": 0.008372943
+  },
+  {
+    "elapsed_time": 10.076,
+    "ntrials": 64,
+    "funevals": 640292,
+    "best_trial": 13,
+    "best_nt": 1251,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0194756,
+      1.0393283,
+      1.0802491,
+      1.1671989
+    ],
+    "best_fx": 0.008372943
+  },
+  {
+    "elapsed_time": 10.218,
+    "ntrials": 64,
+    "funevals": 640292,
+    "best_trial": 13,
+    "best_nt": 1251,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0194756,
+      1.0393283,
+      1.0802491,
+      1.1671989
+    ],
+    "best_fx": 0.008372943
+  },
+  {
+    "elapsed_time": 10.076,
+    "ntrials": 64,
+    "funevals": 640292,
+    "best_trial": 13,
+    "best_nt": 1251,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0194756,
+      1.0393283,
+      1.0802491,
+      1.1671989
+    ],
+    "best_fx": 0.008372943
+  },
+  {
+    "elapsed_time": 10.218,
+    "ntrials": 64,
+    "funevals": 640292,
+    "best_trial": 13,
+    "best_nt": 1251,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0194756,
+      1.0393283,
+      1.0802491,
+      1.1671989
+    ],
+    "best_fx": 0.008372943
+  },
+  {
+    "elapsed_time": 10.347,
+    "ntrials": 64,
+    "funevals": 640292,
+    "best_trial": 13,
+    "best_nt": 1251,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0194756,
+      1.0393283,
+      1.0802491,
+      1.1671989
+    ],
+    "best_fx": 0.008372943
+  },
+  {
+    "elapsed_time": 10.076,
+    "ntrials": 64,
+    "funevals": 640292,
+    "best_trial": 13,
+    "best_nt": 1251,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0194756,
+      1.0393283,
+      1.0802491,
+      1.1671989
+    ],
+    "best_fx": 0.008372943
+  },
+  {
+    "elapsed_time": 10.218,
+    "ntrials": 64,
+    "funevals": 640292,
+    "best_trial": 13,
+    "best_nt": 1251,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0194756,
+      1.0393283,
+      1.0802491,
+      1.1671989
+    ],
+    "best_fx": 0.008372943
+  },
+  {
+    "elapsed_time": 10.347,
+    "ntrials": 64,
+    "funevals": 640292,
+    "best_trial": 13,
+    "best_nt": 1251,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0194756,
+      1.0393283,
+      1.0802491,
+      1.1671989
+    ],
+    "best_fx": 0.008372943
+  },
+  {
+    "elapsed_time": 12.817,
+    "ntrials": 64,
+    "funevals": 640292,
+    "best_trial": 13,
+    "best_nt": 1251,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0194756,
+      1.0393283,
+      1.0802491,
+      1.1671989
+    ],
+    "best_fx": 0.008372943
+  },
+  {
+    "elapsed_time": 10.076,
+    "ntrials": 64,
+    "funevals": 640292,
+    "best_trial": 13,
+    "best_nt": 1251,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0194756,
+      1.0393283,
+      1.0802491,
+      1.1671989
+    ],
+    "best_fx": 0.008372943
+  },
+  {
+    "elapsed_time": 10.218,
+    "ntrials": 64,
+    "funevals": 640292,
+    "best_trial": 13,
+    "best_nt": 1251,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0194756,
+      1.0393283,
+      1.0802491,
+      1.1671989
+    ],
+    "best_fx": 0.008372943
+  },
+  {
+    "elapsed_time": 10.347,
+    "ntrials": 64,
+    "funevals": 640292,
+    "best_trial": 13,
+    "best_nt": 1251,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0194756,
+      1.0393283,
+      1.0802491,
+      1.1671989
+    ],
+    "best_fx": 0.008372943
+  },
+  {
+    "elapsed_time": 12.817,
+    "ntrials": 64,
+    "funevals": 640292,
+    "best_trial": 13,
+    "best_nt": 1251,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0194756,
+      1.0393283,
+      1.0802491,
+      1.1671989
+    ],
+    "best_fx": 0.008372943
+  },
+  {
+    "elapsed_time": 11.445,
+    "ntrials": 64,
+    "funevals": 640292,
+    "best_trial": 13,
+    "best_nt": 1251,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0194756,
+      1.0393283,
+      1.0802491,
+      1.1671989
+    ],
+    "best_fx": 0.008372943
+  }
+]

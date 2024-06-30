@@ -1,0 +1,227 @@
+[
+  {
+    "elapsed_time": 1.729,
+    "ntrials": 64,
+    "funevals": 630464,
+    "best_trial": 49,
+    "best_nt": 1249,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0053073,
+      1.0106341,
+      1.0213858,
+      1.0433087
+    ],
+    "best_fx": 0.00059925095
+  },
+  {
+    "elapsed_time": 1.729,
+    "ntrials": 64,
+    "funevals": 630464,
+    "best_trial": 49,
+    "best_nt": 1249,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0053073,
+      1.0106341,
+      1.0213858,
+      1.0433087
+    ],
+    "best_fx": 0.00059925095
+  },
+  {
+    "elapsed_time": 1.486,
+    "ntrials": 64,
+    "funevals": 630464,
+    "best_trial": 53,
+    "best_nt": 1249,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0053073,
+      1.0106341,
+      1.0213858,
+      1.0433087
+    ],
+    "best_fx": 0.00059925095
+  },
+  {
+    "elapsed_time": 1.729,
+    "ntrials": 64,
+    "funevals": 630464,
+    "best_trial": 49,
+    "best_nt": 1249,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0053073,
+      1.0106341,
+      1.0213858,
+      1.0433087
+    ],
+    "best_fx": 0.00059925095
+  },
+  {
+    "elapsed_time": 1.486,
+    "ntrials": 64,
+    "funevals": 630464,
+    "best_trial": 53,
+    "best_nt": 1249,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0053073,
+      1.0106341,
+      1.0213858,
+      1.0433087
+    ],
+    "best_fx": 0.00059925095
+  },
+  {
+    "elapsed_time": 3.005,
+    "ntrials": 64,
+    "funevals": 630464,
+    "best_trial": 58,
+    "best_nt": 1249,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0053073,
+      1.0106341,
+      1.0213858,
+      1.0433087
+    ],
+    "best_fx": 0.00059925095
+  },
+  {
+    "elapsed_time": 1.729,
+    "ntrials": 64,
+    "funevals": 630464,
+    "best_trial": 49,
+    "best_nt": 1249,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0053073,
+      1.0106341,
+      1.0213858,
+      1.0433087
+    ],
+    "best_fx": 0.00059925095
+  },
+  {
+    "elapsed_time": 1.486,
+    "ntrials": 64,
+    "funevals": 630464,
+    "best_trial": 53,
+    "best_nt": 1249,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0053073,
+      1.0106341,
+      1.0213858,
+      1.0433087
+    ],
+    "best_fx": 0.00059925095
+  },
+  {
+    "elapsed_time": 3.005,
+    "ntrials": 64,
+    "funevals": 630464,
+    "best_trial": 58,
+    "best_nt": 1249,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0053073,
+      1.0106341,
+      1.0213858,
+      1.0433087
+    ],
+    "best_fx": 0.00059925095
+  },
+  {
+    "elapsed_time": 1.432,
+    "ntrials": 64,
+    "funevals": 630464,
+    "best_trial": 54,
+    "best_nt": 1249,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0053073,
+      1.0106341,
+      1.0213858,
+      1.0433087
+    ],
+    "best_fx": 0.00059925095
+  },
+  {
+    "elapsed_time": 1.729,
+    "ntrials": 64,
+    "funevals": 630464,
+    "best_trial": 49,
+    "best_nt": 1249,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0053073,
+      1.0106341,
+      1.0213858,
+      1.0433087
+    ],
+    "best_fx": 0.00059925095
+  },
+  {
+    "elapsed_time": 1.486,
+    "ntrials": 64,
+    "funevals": 630464,
+    "best_trial": 53,
+    "best_nt": 1249,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0053073,
+      1.0106341,
+      1.0213858,
+      1.0433087
+    ],
+    "best_fx": 0.00059925095
+  },
+  {
+    "elapsed_time": 3.005,
+    "ntrials": 64,
+    "funevals": 630464,
+    "best_trial": 58,
+    "best_nt": 1249,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0053073,
+      1.0106341,
+      1.0213858,
+      1.0433087
+    ],
+    "best_fx": 0.00059925095
+  },
+  {
+    "elapsed_time": 1.432,
+    "ntrials": 64,
+    "funevals": 630464,
+    "best_trial": 54,
+    "best_nt": 1249,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0053073,
+      1.0106341,
+      1.0213858,
+      1.0433087
+    ],
+    "best_fx": 0.00059925095
+  },
+  {
+    "elapsed_time": 1.733,
+    "ntrials": 64,
+    "funevals": 630464,
+    "best_trial": 61,
+    "best_nt": 1249,
+    "best_nf": 10005,
+    "best_pt": [
+      1.0053073,
+      1.0106341,
+      1.0213858,
+      1.0433087
+    ],
+    "best_fx": 0.00059925095
+  }
+]

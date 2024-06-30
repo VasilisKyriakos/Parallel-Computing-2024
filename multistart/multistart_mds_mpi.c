@@ -13,8 +13,15 @@
 extern void mds(double *startpoint, double *endpoint, int n, double *val, double eps, int maxfevals, int maxiter,
                 double mu, double theta, double delta, int *ni, int *nf, double *xl, double *xr, int *term);
 
+
+
+extern void write_results_to_json(const char* filename, double elapsed_time, int ntrials, unsigned long funevals, 
+                           int best_trial, int best_nt, int best_nf, double* best_pt, int nvars, double best_fx);
+
+                           
 /* global variables */
 unsigned long local_funevals = 0;
+
 
 /* Rosenbrock classic parabolic valley ("banana") function */
 double f(double *x, int n) {
@@ -35,6 +42,7 @@ double get_wtime(void) {
 }
 
 int main(int argc, char *argv[]) {
+
     MPI_Init(&argc, &argv);
 
     int rank, size;
@@ -58,12 +66,21 @@ int main(int argc, char *argv[]) {
     double fx;  /* function value at the final point of mds */
     int nt, nf; /* number of iterations and function evaluations used by mds */
 
-    /* information about the best point found by multistart */
-    double best_pt[MAXVARS];
-    double best_fx = 1e10;
-    int best_trial = -1;
-    int best_nt = -1;
-    int best_nf = -1;
+    /* information about the best point found by each process */
+
+    double local_best_pt[MAXVARS];
+    double local_best_fx = 1e10;
+    int local_best_trial = -1;
+    int local_best_nt = -1;
+    int local_best_nf = -1;
+
+    /* global best information */
+
+    double global_best_pt[MAXVARS];
+    double global_best_fx = 1e10;
+    int global_best_trial = -1;
+    int global_best_nt = -1;
+    int global_best_nf = -1;
 
     /* local variables */
     int trial, i;
@@ -96,18 +113,27 @@ int main(int argc, char *argv[]) {
         int term = -1;
         mds(startpt, endpt, nvars, &fx, eps, maxfevals, maxiter, mu, theta, delta, &nt, &nf, lower, upper, &term);
 
-        if (fx < best_fx) {
-            best_trial = trial;
-            best_nt = nt;
-            best_nf = nf;
-            best_fx = fx;
+        if (fx < local_best_fx) {
+            local_best_trial = trial;
+            local_best_nt = nt;
+            local_best_nf = nf;
+            local_best_fx = fx;
             for (i = 0; i < nvars; i++)
-                best_pt[i] = endpt[i];
+                local_best_pt[i] = endpt[i];
         }
     }
 
-    /* Gather results from all processes */
+    /* Rank 0 also considers its own results */
     if (rank == 0) {
+
+        global_best_fx = local_best_fx;
+        global_best_trial = local_best_trial;
+        global_best_nt = local_best_nt;
+        global_best_nf = local_best_nf;
+
+        for (i = 0; i < nvars; i++)
+            global_best_pt[i] = local_best_pt[i];
+
         for (int p = 1; p < size; p++) {
             double recv_fx;
             int recv_trial, recv_nt, recv_nf;
@@ -115,45 +141,28 @@ int main(int argc, char *argv[]) {
 
             MPI_Status status;
 
-            MPI_Recv(&recv_fx, 1, MPI_DOUBLE, p, 100, MPI_COMM_WORLD,&status);
+            MPI_Recv(&recv_fx, 1, MPI_DOUBLE, p, 100, MPI_COMM_WORLD, &status);
             MPI_Recv(&recv_trial, 1, MPI_INT, p, 101, MPI_COMM_WORLD, &status);
             MPI_Recv(&recv_nt, 1, MPI_INT, p, 102, MPI_COMM_WORLD, &status);
             MPI_Recv(&recv_nf, 1, MPI_INT, p, 103, MPI_COMM_WORLD, &status);
             MPI_Recv(recv_pt, MAXVARS, MPI_DOUBLE, p, 104, MPI_COMM_WORLD, &status);
 
-            if (recv_fx < best_fx) {
-                best_fx = recv_fx;
-                best_trial = recv_trial;
-                best_nt = recv_nt;
-                best_nf = recv_nf;
+            if (recv_fx < global_best_fx) {
+                global_best_fx = recv_fx;
+                global_best_trial = recv_trial;
+                global_best_nt = recv_nt;
+                global_best_nf = recv_nf;
                 for (i = 0; i < nvars; i++)
-                    best_pt[i] = recv_pt[i];
+                    global_best_pt[i] = recv_pt[i];
             }
         }
 
-        /* Broadcast the best result to all other processes */
-        
-        MPI_Bcast(&best_trial, 1, MPI_INT, 0, MPI_COMM_WORLD);
-        MPI_Bcast(&best_nt, 1, MPI_INT, 0, MPI_COMM_WORLD);
-        MPI_Bcast(&best_nf, 1, MPI_INT, 0, MPI_COMM_WORLD);
-        MPI_Bcast(best_pt, MAXVARS, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-        MPI_Bcast(&best_fx, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-
     } else {
-
-        MPI_Send(&best_fx, 1, MPI_DOUBLE, 0, 100, MPI_COMM_WORLD);
-        MPI_Send(&best_trial, 1, MPI_INT, 0, 101, MPI_COMM_WORLD);
-        MPI_Send(&best_nt, 1, MPI_INT, 0, 102, MPI_COMM_WORLD);
-        MPI_Send(&best_nf, 1, MPI_INT, 0, 103, MPI_COMM_WORLD);
-        MPI_Send(best_pt, MAXVARS, MPI_DOUBLE, 0, 104, MPI_COMM_WORLD);
-
-        /* Receive the best result from rank 0 */
-        MPI_Bcast(&best_trial, 1, MPI_INT, 0, MPI_COMM_WORLD);
-        MPI_Bcast(&best_nt, 1, MPI_INT, 0, MPI_COMM_WORLD);
-        MPI_Bcast(&best_nf, 1, MPI_INT, 0, MPI_COMM_WORLD);
-        MPI_Bcast(best_pt, MAXVARS, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-        MPI_Bcast(&best_fx, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-
+        MPI_Send(&local_best_fx, 1, MPI_DOUBLE, 0, 100, MPI_COMM_WORLD);
+        MPI_Send(&local_best_trial, 1, MPI_INT, 0, 101, MPI_COMM_WORLD);
+        MPI_Send(&local_best_nt, 1, MPI_INT, 0, 102, MPI_COMM_WORLD);
+        MPI_Send(&local_best_nf, 1, MPI_INT, 0, 103, MPI_COMM_WORLD);
+        MPI_Send(local_best_pt, MAXVARS, MPI_DOUBLE, 0, 104, MPI_COMM_WORLD);
     }
 
     /* Reduce the function evaluations across all processes */
@@ -167,14 +176,18 @@ int main(int argc, char *argv[]) {
         printf("Elapsed time = %.3lf s\n", t1 - t0);
         printf("Total number of trials = %d\n", ntrials);
         printf("Total number of function evaluations = %ld\n", global_funevals);
-        printf("Best result at trial %d used %d iterations, %d function calls and returned\n", best_trial, best_nt, best_nf);
+        printf("Best result at trial %d used %d iterations, %d function calls and returned\n", global_best_trial, global_best_nt, global_best_nf);
         for (i = 0; i < nvars; i++) {
-            printf("x[%3d] = %15.7le \n", i, best_pt[i]);
+            printf("x[%3d] = %15.7le \n", i, global_best_pt[i]);
         }
-        printf("f(x) = %15.7le\n", best_fx);
+        printf("f(x) = %15.7le\n", global_best_fx);
+
+        write_results_to_json("results_mpi.json", t1 - t0, ntrials, global_funevals, global_best_trial, global_best_nt, global_best_nf, global_best_pt, nvars, global_best_fx);
+
     }
 
     MPI_Finalize();
+    
 
     return 0;
 }
