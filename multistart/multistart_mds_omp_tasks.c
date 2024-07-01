@@ -82,6 +82,7 @@ int main(int argc, char *argv[])
     for (i = 0; i < MAXVARS; i++) upper[i] = +2.0; /* upper bound: +2.0 */
 
     t0 = omp_get_wtime();
+
     long tseed = 1;
 
     #pragma omp parallel
@@ -90,21 +91,30 @@ int main(int argc, char *argv[])
         {
     
             unsigned short randBuffer[3];
-            int thread_id = omp_get_thread_num();
+            
+            //int thread_id = omp_get_thread_num();
+
             randBuffer[0] = 0;
             randBuffer[1] = 0;
-            randBuffer[2] = tseed + ntrials + thread_id;  // Ensure unique seed for each thread
+            randBuffer[2] = tseed + ntrials + 1;  // Ensure unique seed for each thread
             
             //printf("\n\nStart Trials ...");
 
             for (trial = 0; trial < ntrials; trial++) {
+
+                //printf("Trial : %d\n",trial);
+
 
                 //printf("\n\nThread num %d || Rand Buffer: %d",omp_get_thread_num(),randBuffer[2]);
 
                 /* starting guess for rosenbrock test function, search space in [-2, 2) */
                 for (i = 0; i < nvars; i++) {
                     startpt[i] = lower[i] + (upper[i] - lower[i]) * erand48(randBuffer);
-                }           
+                    //rintf("Start pt [%d] : %f \n",i+1,startpt[i]);
+                }         
+
+                //printf("\n");  
+
         
                 int term = -1;
 
@@ -139,7 +149,7 @@ int main(int argc, char *argv[])
     }
     printf("f(x) = %15.7le\n", best_fx);
     
-    //write_results_to_json("results_openmp_tasks.json", t1 - t0, ntrials, funevals, best_trial, best_nt, best_nf, best_pt, nvars, best_fx);
+    write_results_to_json("results_openmp_tasks.json", t1 - t0, ntrials, funevals, best_trial, best_nt, best_nf, best_pt, nvars, best_fx);
 
     return 0;
 }

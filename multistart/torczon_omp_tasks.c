@@ -169,10 +169,9 @@ void mds(double *point, double *endpoint, int n, double *val, double eps, int ma
 	initialize_simplex(u, n, point, delta);
 
 	for (i = 0; i < n + 1; i++) {
-            #pragma omp task firstprivate(i)
+            #pragma omp task firstprivate(i) untied
 			fu[i] = f(&u[i * n], n);
 
-            #pragma omp atomic
 			*nf = *nf + 1;
 	}
 

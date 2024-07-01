@@ -86,7 +86,13 @@ int main(int argc, char *argv[])
 		/* starting guess for rosenbrock test function, search space in [-2, 2) */
 		for (i = 0; i < nvars; i++) {
 			startpt[i] = lower[i] + (upper[i]-lower[i])*drand48();
-		}
+		} 
+
+		/* Point that we get the best f(x) in openMP tasks
+		startpt[0] = 0.811721 ;
+		startpt[1] = 1.494520 ;
+		startpt[2] = 1.486807 ;
+		startpt[3] = 0.001799 ; */
 
 		int term = -1;
     mds(startpt, endpt, nvars, &fx, eps, maxfevals, maxiter, mu, theta, delta,
